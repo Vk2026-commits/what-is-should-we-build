@@ -5,7 +5,7 @@ import { ArrowRight } from "lucide-react";
 import { brandCopy, questions, stages, type Question } from "@/content/assessment";
 import { buildSummary, scoreAssessment, type Answers } from "@/lib/scoring";
 import { captureAttribution, type Attribution } from "@/lib/attribution";
-import { submitAssessment, type LeadInput } from "@/lib/funnel-api";
+import { sendOperationsEmail, submitAssessment, type LeadInput } from "@/lib/funnel-api";
 import { SiteHeader } from "@/components/funnel/SiteHeader";
 import { ProgressIndicator } from "@/components/funnel/ProgressIndicator";
 import { AssessmentQuestion } from "@/components/funnel/AssessmentQuestion";
@@ -52,6 +52,18 @@ function PathFinder() {
   const [lead, setLead] = useState<LeadInput | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
+  const [emailStatus, setEmailStatus] = useState<
+    "idle" | "sending" | "sent" | "failed" | "processing"
+  >("idle");
+  const [savedIds, setSavedIds] = useState<{ leadId: string; assessmentId: string } | null>(null);
+  const emailBrief = async (ids: { leadId: string; assessmentId: string }) => {
+    setEmailStatus("sending");
+    try {
+      setEmailStatus(await sendOperationsEmail(ids.leadId, ids.assessmentId));
+    } catch {
+      setEmailStatus("failed");
+    }
+  };
   const topRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -132,6 +144,11 @@ function PathFinder() {
     setSubmitting(false);
     setStage("result");
     scrollTop();
+    if (res.persisted && res.leadId && res.assessmentId) {
+      const ids = { leadId: res.leadId, assessmentId: res.assessmentId };
+      setSavedIds(ids);
+      await emailBrief(ids);
+    }
   };
 
   const stageIndex = stages.indexOf(current.stage);
@@ -232,7 +249,8 @@ function PathFinder() {
             summary={summary}
             path={result.path}
             answers={answers}
-            saved={!serverError}
+            emailStatus={emailStatus}
+            onRetry={savedIds ? () => void emailBrief(savedIds) : undefined}
           />
           {serverError && (
             <p className="text-center text-xs text-muted-foreground">{serverError}</p>

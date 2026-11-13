@@ -10,7 +10,7 @@ This remix uses nine business operations questions and four first-build recommen
 
 The operations migration was applied to the provided Supabase project on November 13, 2026. The browser uses its public publishable key; environment variables can override the project configuration. Anonymous reads of operations assessments are denied. The old income email Edge Function is retained for compatibility but is not called by this funnel.
 
-The result offers a local text download. Contact submission explicitly requests follow-up. No booking link is needed; the funnel ends with the brief and download.
+The result offers a local text download. Contact submission explicitly requests follow-up. The result offers a Calendly call at https://calendly.com/vektiss-info/vektiss-call and sends the full brief by email through send-operations-assessment-email. Apply operations-email.sql for delivery tracking.
 
 ## Validation
 

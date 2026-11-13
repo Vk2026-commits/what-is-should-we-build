@@ -197,12 +197,14 @@ export function WaitlistCTA({
   summary,
   path,
   answers,
-  saved,
+  emailStatus,
+  onRetry,
 }: {
   summary: string;
   path: PathId;
   answers: Answers;
-  saved: boolean;
+  emailStatus: "idle" | "sending" | "sent" | "failed" | "processing";
+  onRetry?: (() => void) | undefined;
 }) {
   const download = () => {
     const responses = questions
@@ -227,14 +229,41 @@ export function WaitlistCTA({
       </p>
       <h3 className="mt-3 text-3xl font-bold">Let’s Map Your First Version.</h3>
       <p className="mt-4 max-w-2xl text-muted-foreground">
-        {saved
-          ? "Your details and build priorities have been saved for a follow-up conversation. Bring one real workflow, the tools involved, and the person who owns it."
-          : "Use this brief to scope a conversation about your first build. Start with one workflow, the tools involved, and the person who owns it."}
+        Book a call to walk through your assessment, identify the highest-priority workflow, and
+        discuss what a first version could look like for your business.
       </p>
+      <p role="status" aria-live="polite" className="mt-4 text-sm text-muted-foreground">
+        {emailStatus === "sent"
+          ? "Your assessment has been emailed to you. Check your inbox and spam folder."
+          : emailStatus === "sending"
+            ? "Sending your assessment to your email…"
+            : emailStatus === "processing"
+              ? "Your assessment email is being processed."
+              : emailStatus === "failed"
+                ? "We couldn’t email your assessment yet. You can retry or download it below."
+                : "Keep a copy of your assessment using the download below."}
+      </p>
+      {(emailStatus === "failed" || emailStatus === "processing") && onRetry && (
+        <button
+          type="button"
+          onClick={onRetry}
+          className="mt-3 text-sm font-semibold text-primary underline"
+        >
+          {emailStatus === "processing" ? "Check email status" : "Retry email"}
+        </button>
+      )}
+      <a
+        href="https://calendly.com/vektiss-info/vektiss-call"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="mt-7 inline-flex min-h-14 items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3 font-semibold text-primary-foreground"
+      >
+        Book a Call About My Build <ArrowRight className="size-4" />
+      </a>
       <button
         type="button"
         onClick={download}
-        className="mt-7 flex min-h-14 items-center gap-2 rounded-xl bg-primary px-6 py-3 font-semibold text-primary-foreground"
+        className="mt-3 flex min-h-12 items-center gap-2 rounded-xl border border-border px-6 py-3 font-semibold text-foreground"
       >
         Download My Build Brief <ArrowRight className="size-4" />
       </button>

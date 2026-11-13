@@ -77,3 +77,12 @@ export async function submitAssessment(params: {
     return { leadId: null, assessmentId: null, persisted: false, error: message };
   }
 }
+
+export async function sendOperationsEmail(leadId: string, assessmentId: string) {
+  const { data, error } = await supabase.functions.invoke<{ ok: boolean; status?: string }>(
+    "send-operations-assessment-email",
+    { body: { leadId, assessmentId } },
+  );
+  if (error || !data?.ok) throw new Error("Email delivery failed.");
+  return data.status === "sent" ? "sent" : "processing";
+}

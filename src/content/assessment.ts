@@ -55,7 +55,7 @@ export const brandCopy = {
   leadForm: {
     heading: "Your Operations Build Brief Is Ready.",
     support:
-      "Add your business details to view your recommendation and discuss what a first version could look like.",
+      "Add your business details to view your recommendation and receive your assessment by email.",
     cta: "Show My Build Brief",
   },
 };
