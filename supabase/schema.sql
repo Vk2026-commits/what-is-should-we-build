@@ -375,3 +375,34 @@ grant execute on function public.create_income_assessment(jsonb) to anon, authen
 grant execute on function public.join_waitlist(uuid, uuid) to anon, authenticated;
 revoke all on function public.claim_assessment_email(uuid, uuid) from public, anon, authenticated;
 grant execute on function public.claim_assessment_email(uuid, uuid) to service_role;
+
+-- OPERATIONS BUILD FINDER: separate records from the original income funnel.
+create table if not exists public.operations_assessments (
+  id uuid primary key default gen_random_uuid(),
+  lead_id uuid not null references public.leads(id) on delete cascade,
+  funnel text not null default 'operations_build_finder',
+  answers jsonb not null,
+  scores jsonb not null,
+  calculated_path text not null check (calculated_path in ('knowledge','workflow','vendors','connected')),
+  result_summary text not null,
+  follow_up_requested boolean not null default true,
+  created_at timestamptz not null default now()
+);
+alter table public.operations_assessments enable row level security;
+revoke all on public.operations_assessments from anon, authenticated;
+create or replace function public.create_operations_assessment(p_assessment jsonb)
+returns uuid language plpgsql security definer set search_path = public as $$
+declare new_id uuid;
+begin
+  if jsonb_typeof(p_assessment->'answers') is distinct from 'object'
+     or jsonb_typeof(p_assessment->'scores') is distinct from 'object'
+     or length(p_assessment::text) > 20000 then
+    raise exception 'Invalid assessment';
+  end if;
+  insert into public.operations_assessments (lead_id, answers, scores, calculated_path, result_summary)
+  values ((p_assessment->>'lead_id')::uuid, p_assessment->'answers', p_assessment->'scores',
+          p_assessment->>'calculated_path', p_assessment->>'result_summary') returning id into new_id;
+  return new_id;
+end $$;
+revoke all on function public.create_operations_assessment(jsonb) from public;
+grant execute on function public.create_operations_assessment(jsonb) to anon, authenticated;

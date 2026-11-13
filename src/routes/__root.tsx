@@ -77,11 +77,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "AI Income Path Finder" },
+      { title: "Operations Build Finder" },
       {
         name: "description",
-        content:
-          "Discover the AI income path that fits your goal, skills and available time.",
+        content: "Find the operations system your business should build first.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

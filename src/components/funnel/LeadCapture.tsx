@@ -32,8 +32,9 @@ export function LeadCapture({
     const e: Partial<Record<keyof LeadInput, string>> = {};
     if (values.first_name.trim().length < 2) e.first_name = "Please enter your first name.";
     if (!emailRe.test(values.email.trim())) e.email = "Please enter a valid email address.";
-    if (!phoneRe.test(values.phone.trim())) e.phone = "Please enter a valid phone number.";
-    if (values.current_job.trim().length < 2) e.current_job = "Please tell us what you currently do.";
+    if (values.phone.trim() && !phoneRe.test(values.phone.trim()))
+      e.phone = "Please enter a valid phone number.";
+    if (values.current_job.trim().length < 2) e.current_job = "Please enter your business name.";
     setErrors(e);
     return Object.keys(e).length === 0;
   };
@@ -61,8 +62,8 @@ export function LeadCapture({
           [
             { k: "first_name", label: "First Name", type: "text", ph: "Jordan" },
             { k: "email", label: "Email", type: "email", ph: "you@company.com" },
-            { k: "phone", label: "Mobile Phone Number", type: "tel", ph: "(555) 123-4567" },
-            { k: "current_job", label: "Current Job / Profession", type: "text", ph: "Operations manager" },
+            { k: "phone", label: "Phone (optional)", type: "tel", ph: "(555) 123-4567" },
+            { k: "current_job", label: "Business Name", type: "text", ph: "Your company" },
           ] as const
         ).map((f) => (
           <div key={f.k}>
@@ -77,7 +78,7 @@ export function LeadCapture({
               type={f.type}
               inputMode={f.k === "phone" ? "tel" : undefined}
               autoComplete={
-                f.k === "first_name" ? "given-name" : f.k === "current_job" ? "organization-title" : f.k
+                f.k === "first_name" ? "given-name" : f.k === "current_job" ? "organization" : f.k
               }
               placeholder={f.ph}
               value={values[f.k]}
@@ -98,7 +99,9 @@ export function LeadCapture({
           type="submit"
           disabled={submitting}
           className="flex h-14 w-full items-center justify-center gap-2 rounded-xl bg-primary text-base font-semibold text-primary-foreground transition-all hover:brightness-110 disabled:opacity-60"
-          style={{ boxShadow: "0 16px 40px -18px color-mix(in oklab, var(--primary) 90%, transparent)" }}
+          style={{
+            boxShadow: "0 16px 40px -18px color-mix(in oklab, var(--primary) 90%, transparent)",
+          }}
         >
           {submitting ? <Loader2 className="size-5 animate-spin" /> : null}
           {brandCopy.leadForm.cta}
@@ -107,7 +110,7 @@ export function LeadCapture({
 
         <p className="flex items-center justify-center gap-1.5 text-xs text-muted-foreground">
           <Lock className="size-3" />
-          Your information is used only to deliver your plan and training updates.
+          By submitting, you agree to be contacted about your operations build.
         </p>
       </form>
     </div>

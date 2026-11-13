@@ -1,13 +1,11 @@
 import { ArrowRight, Ban, Target } from "lucide-react";
-import { paths, pathOrder, type PathId } from "@/content/assessment";
-import type { Scores } from "@/lib/scoring";
-
-const SKOOL_COMMUNITY_URL = "https://www.skool.com/ai-income-jumpstart/about";
+import { paths, pathOrder, questions, type PathId } from "@/content/assessment";
+import type { Answers, Scores } from "@/lib/scoring";
 
 export function PathProgression({ current }: { current: PathId }) {
   return (
     <div className="flex flex-col gap-2 sm:flex-row sm:items-stretch">
-      {pathOrder.map((id, i) => {
+      {pathOrder.map((id) => {
         const active = id === current;
         return (
           <div key={id} className="flex flex-1 items-center gap-2">
@@ -23,7 +21,7 @@ export function PathProgression({ current }: { current: PathId }) {
                   active ? "text-primary" : "text-muted-foreground/60",
                 ].join(" ")}
               >
-                Stage {String(i + 1).padStart(2, "0")}
+                {active ? "Build first" : "Other build area"}
               </p>
               <p
                 className={[
@@ -34,9 +32,6 @@ export function PathProgression({ current }: { current: PathId }) {
                 {paths[id].name}
               </p>
             </div>
-            {i < pathOrder.length - 1 && (
-              <span className="hidden text-muted-foreground/40 sm:block">→</span>
-            )}
           </div>
         );
       })}
@@ -48,7 +43,7 @@ export function ResultHeader({ path, firstName }: { path: PathId; firstName: str
   return (
     <div>
       <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-primary">
-        {firstName ? `${firstName}, your` : "Your"} recommended AI income path
+        {firstName ? `${firstName}, your` : "Your"} recommended first operations build
       </p>
       <h1 className="mt-3 text-[34px] font-bold leading-[1.08] sm:text-6xl">{paths[path].name}</h1>
       <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-muted-foreground sm:text-lg">
@@ -61,13 +56,13 @@ export function ResultHeader({ path, firstName }: { path: PathId; firstName: str
 export function ResultDashboard({ path, incomeGoal }: { path: PathId; incomeGoal: string }) {
   const d = paths[path].dashboard;
   const rows = [
-    { label: "Income Goal", value: incomeGoal },
-    { label: "Recommended Model", value: paths[path].name },
-    { label: "Time Commitment", value: d.timeCommitment },
-    { label: "Speed to Market", value: d.speedToMarket },
+    { label: "Team Size", value: incomeGoal },
+    { label: "Recommended Build", value: paths[path].name },
+    { label: "Pilot Ownership", value: d.timeCommitment },
+    { label: "Delivery Approach", value: d.speedToMarket },
     { label: "Technical Complexity", value: d.technicalComplexity },
     { label: "Scalability", value: d.scalability },
-    { label: "Customer Acquisition", value: d.customerAcquisition },
+    { label: "Foundation", value: d.customerAcquisition },
   ];
   return (
     <div className="grid gap-px overflow-hidden rounded-2xl border border-border bg-border sm:grid-cols-2 lg:grid-cols-4">
@@ -92,7 +87,7 @@ export function OpportunityFitChart({
 }) {
   return (
     <div>
-      <h3 className="text-xl font-bold sm:text-2xl">Your Opportunity Fit</h3>
+      <h3 className="text-xl font-bold sm:text-2xl">Your Build Priorities</h3>
       <div className="mt-5 space-y-4">
         {pathOrder.map((id) => {
           const active = id === current;
@@ -135,7 +130,8 @@ export function OpportunityFitChart({
         })}
       </div>
       <p className="mt-4 text-xs text-muted-foreground">
-        These are assessment-fit indicators, not precise predictions.
+        These scores show how your bottleneck, information gaps, and business impact align with each
+        build. They are not ROI forecasts.
       </p>
     </div>
   );
@@ -197,47 +193,51 @@ export function AvoidSection({ path }: { path: PathId }) {
   );
 }
 
-export function WaitlistCTA({ webinarUrl }: { webinarUrl: string }) {
+export function WaitlistCTA({
+  summary,
+  path,
+  answers,
+  saved,
+}: {
+  summary: string;
+  path: PathId;
+  answers: Answers;
+  saved: boolean;
+}) {
+  const download = () => {
+    const responses = questions
+      .map((q) => {
+        const raw = answers[q.id];
+        const values = Array.isArray(raw) ? raw : [raw];
+        return `${q.question}\n${values.map((v) => q.options?.find((o) => o.value === v)?.label ?? v).join(", ")}`;
+      })
+      .join("\n\n");
+    const text = `OPERATIONS BUILD BRIEF\n\n${paths[path].name}\n\n${summary}\n\nFIRST VERSION\n${paths[path].examples.join("\n")}\n\nNEXT STEPS\n${paths[path].nextMoves.join("\n")}\n\nSCOPE GUARDRAIL\n${paths[path].avoid}\n\nYOUR ANSWERS\n${responses}`;
+    const url = URL.createObjectURL(new Blob([text], { type: "text/plain" }));
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "operations-build-brief.txt";
+    link.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  };
   return (
-    <div className="panel relative overflow-hidden rounded-2xl p-7 sm:p-10">
-      <div
-        className="pointer-events-none absolute -right-24 -top-24 size-64 rounded-full opacity-40 blur-3xl"
-        style={{ background: "color-mix(in oklab, var(--primary) 45%, transparent)" }}
-      />
-      <div className="relative">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-primary">
-          Your next step
-        </p>
-        <h3 className="mt-3 max-w-2xl text-[26px] font-bold leading-tight sm:text-4xl">
-          Bring Your AI Income Plan to Life.
-        </h3>
-        <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-muted-foreground sm:text-base">
-          Read through your personalized result first—especially your recommended path, next 3
-          moves, and what not to focus on yet. Then join the AI Income Jumpstart community on Skool
-          to keep moving, and join Ricky Rose live for Build Your First AI Income Stream.
-        </p>
-        <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-          <a
-            href={SKOOL_COMMUNITY_URL}
-            target="_blank"
-            rel="noreferrer"
-            className="flex h-14 w-full items-center justify-center gap-2 rounded-xl bg-primary px-8 text-base font-semibold text-primary-foreground transition-all hover:brightness-110 sm:w-auto"
-            style={{
-              boxShadow: "0 16px 40px -18px color-mix(in oklab, var(--primary) 90%, transparent)",
-            }}
-          >
-            Join AI Income Jumpstart on Skool
-            <ArrowRight className="size-4" />
-          </a>
-          <a
-            href={webinarUrl}
-            className="flex h-14 w-full items-center justify-center gap-2 rounded-xl border border-primary/50 bg-primary/10 px-8 text-base font-semibold text-primary transition-all hover:bg-primary/20 sm:w-auto"
-          >
-            Register for the free live training
-            <ArrowRight className="size-4" />
-          </a>
-        </div>
-      </div>
+    <div className="panel rounded-2xl p-7 sm:p-10">
+      <p className="text-xs font-semibold uppercase tracking-widest text-primary">
+        From brief to first build
+      </p>
+      <h3 className="mt-3 text-3xl font-bold">Let’s Map Your First Version.</h3>
+      <p className="mt-4 max-w-2xl text-muted-foreground">
+        {saved
+          ? "Your details and build priorities have been saved for a follow-up conversation. Bring one real workflow, the tools involved, and the person who owns it."
+          : "Use this brief to scope a conversation about your first build. Start with one workflow, the tools involved, and the person who owns it."}
+      </p>
+      <button
+        type="button"
+        onClick={download}
+        className="mt-7 flex min-h-14 items-center gap-2 rounded-xl bg-primary px-6 py-3 font-semibold text-primary-foreground"
+      >
+        Download My Build Brief <ArrowRight className="size-4" />
+      </button>
     </div>
   );
 }

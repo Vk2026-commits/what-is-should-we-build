@@ -5,7 +5,7 @@ import { ArrowRight } from "lucide-react";
 import { brandCopy, questions, stages, type Question } from "@/content/assessment";
 import { buildSummary, scoreAssessment, type Answers } from "@/lib/scoring";
 import { captureAttribution, type Attribution } from "@/lib/attribution";
-import { sendAssessmentEmail, submitAssessment, type LeadInput } from "@/lib/funnel-api";
+import { submitAssessment, type LeadInput } from "@/lib/funnel-api";
 import { SiteHeader } from "@/components/funnel/SiteHeader";
 import { ProgressIndicator } from "@/components/funnel/ProgressIndicator";
 import { AssessmentQuestion } from "@/components/funnel/AssessmentQuestion";
@@ -23,20 +23,9 @@ import {
   WhyThisFits,
 } from "@/components/funnel/ResultReport";
 
-const TITLE = "AI Income Path Finder — Find Your Best AI Income Path";
+const TITLE = "Operations Build Finder — What Should Your Business Build Next?";
 const DESCRIPTION =
-  "A 3-minute personalized assessment that shows which AI income path fits your goal, skills and available time — and exactly what to do first.";
-const WEBINAR_URL = "https://webinar.vektiss.com/";
-
-function buildWebinarRegistrationUrl(leadId: string | null, assessmentId: string | null) {
-  const url = new URL(WEBINAR_URL);
-  if (leadId) url.searchParams.set("lead_id", leadId);
-  if (assessmentId) url.searchParams.set("assessment_id", assessmentId);
-  url.searchParams.set("plan_url", "https://income.vektiss.com/");
-  url.searchParams.set("utm_source", "ai_income_path_finder");
-  url.searchParams.set("utm_medium", "assessment_result");
-  return url.toString();
-}
+  "Find the operations system your business needs first: connected knowledge, workflows, vendor updates, and accountable next steps.";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -46,27 +35,14 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: TITLE },
       { property: "og:description", content: DESCRIPTION },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: "https://income.vektiss.com/" },
-      {
-        property: "og:image",
-        content: "https://income.vektiss.com/og-cover.jpg",
-      },
-      { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: TITLE },
-      { name: "twitter:description", content: DESCRIPTION },
-      {
-        name: "twitter:image",
-        content: "https://income.vektiss.com/og-cover.jpg",
-      },
     ],
-    links: [{ rel: "canonical", href: "https://income.vektiss.com/" }],
   }),
   component: PathFinder,
 });
 
 type Stage = "hero" | "intro" | "questions" | "analysis" | "lead" | "result";
 
-const STORAGE_KEY = "aipf_answers";
+const STORAGE_KEY = "operations_build_answers_v1";
 
 function PathFinder() {
   const [stage, setStage] = useState<Stage>("hero");
@@ -76,10 +52,6 @@ function PathFinder() {
   const [lead, setLead] = useState<LeadInput | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
-  const [ids, setIds] = useState<{ leadId: string | null; assessmentId: string | null }>({
-    leadId: null,
-    assessmentId: null,
-  });
   const topRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -152,28 +124,15 @@ function PathFinder() {
       path: result.path,
       summary,
     });
-    setIds({ leadId: res.leadId, assessmentId: res.assessmentId });
     if (!res.persisted) {
-      setServerError("We couldn't save your details right now, but your plan is ready below.");
-    } else {
-      try {
-        const emailResult = await sendAssessmentEmail(res.leadId, res.assessmentId);
-        if (!emailResult.ok) {
-          setServerError("Your plan is ready below, but we couldn't email a copy just yet.");
-        }
-      } catch {
-        setServerError("Your plan is ready below, but we couldn't email a copy just yet.");
-      }
+      setServerError(
+        "Your brief is ready, but your details could not be saved. Download your brief and try again later to request a build conversation.",
+      );
     }
     setSubmitting(false);
     setStage("result");
     scrollTop();
   };
-
-  const webinarUrl = useMemo(
-    () => buildWebinarRegistrationUrl(ids.leadId, ids.assessmentId),
-    [ids.assessmentId, ids.leadId],
-  );
 
   const stageIndex = stages.indexOf(current.stage);
   const progress =
@@ -263,13 +222,18 @@ function PathFinder() {
             <PathProgression current={result.path} />
           </div>
           <WhyThisFits summary={summary} />
-          <ResultDashboard path={result.path} incomeGoal={labelOf("income_goal")} />
+          <ResultDashboard path={result.path} incomeGoal={labelOf("team_size")} />
           <div className="panel rounded-2xl p-6 sm:p-8">
             <OpportunityFitChart percentages={result.percentages} current={result.path} />
           </div>
           <NextSteps path={result.path} />
           <AvoidSection path={result.path} />
-          <WaitlistCTA webinarUrl={webinarUrl} />
+          <WaitlistCTA
+            summary={summary}
+            path={result.path}
+            answers={answers}
+            saved={!serverError}
+          />
           {serverError && (
             <p className="text-center text-xs text-muted-foreground">{serverError}</p>
           )}
@@ -277,7 +241,7 @@ function PathFinder() {
       )}
 
       <footer className="border-t border-border/60 py-8 text-center text-xs text-muted-foreground">
-        © {new Date().getFullYear()} AI Income Path Finder
+        © {new Date().getFullYear()} Operations Build Finder
       </footer>
     </div>
   );

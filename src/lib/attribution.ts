@@ -9,7 +9,7 @@ export interface Attribution {
   comment_keyword: string | null;
 }
 
-const STORAGE_KEY = "aipf_attribution";
+const STORAGE_KEY = "operations_build_attribution_v1";
 
 const empty: Attribution = {
   utm_source: null,

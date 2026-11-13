@@ -1,10 +1,4 @@
-/**
- * All editable copy + question content for the AI Income Path Finder.
- * UI logic lives elsewhere — change wording, options and order here.
- */
-
-export type PathId = "freelancer" | "service_provider" | "implementation" | "product_builder";
-
+export type PathId = "knowledge" | "workflow" | "vendors" | "connected";
 export type QuestionType = "single" | "multi" | "scale";
 
 export interface QuestionOption {
@@ -25,194 +19,293 @@ export interface Question {
 }
 
 export const brandCopy = {
-  productName: "AI Income Path Finder",
+  productName: "Operations Build Finder",
   hero: {
-    eyebrow: "Personalized AI Income Assessment",
-    headline: "Find Your Best AI Income Path",
+    eyebrow: "For business owners & operations leaders",
+    headline: "What Should Your Business Build Next?",
     subheadline:
-      "Answer a few questions about your income goal, skills, experience, and available time. We'll help you identify the AI opportunity that makes the most sense for where you are right now.",
-    support:
-      "You do not need to quit your job, become a developer, or start from zero.",
-    cta: "Find My AI Income Path",
-    underCta: "Takes about 3 minutes",
-    flow: ["Your Skills", "AI Leverage", "Opportunity", "Income"],
+      "Your documents, conversations, and decisions tell one story. Your tools keep them in different places. Find the operations system that would make the biggest difference for your business.",
+    support: "Start with one costly bottleneck. Connect the tools your team already uses.",
+    cta: "Find My First Build",
+    underCta: "About 3 minutes \u00b7 A practical, personalized build brief",
+    flow: ["Your Business", "The Bottleneck", "Connected Systems", "Your Build Brief"],
   },
   intro: {
-    heading: "You Don't Need Every AI Opportunity.",
+    heading: "Your Business Knowledge Should Work Together.",
     body: [
-      "You need the one that fits your current situation.",
-      "Someone trying to make an additional $500 per month should probably not follow the same strategy as someone trying to build a $50,000-per-month company.",
-      "Your available time, current skills, comfort with sales, technical ability, and income goal all change the answer.",
-      "Let's find your path.",
+      "An agreement lives in a folder. The context lives in a conversation. The next step lives in someone\u2019s head.",
+      "Outlook, Teams, SharePoint, and other tools support daily work. But finding a document is different from connecting it to a decision and the person responsible for acting on it.",
+      "A custom operations system can connect those pieces. It still needs clear ownership, permissions, and a tested backup plan.",
+      "Tell us where work breaks down. We\u2019ll recommend one useful place to start.",
     ],
-    cta: "Start My Assessment",
+    cta: "Map My Operations",
   },
   analysis: {
-    heading: "Analyzing your answers...",
+    heading: "Mapping your first build\u2026",
     items: [
-      "Income Goal",
-      "Skills",
-      "Available Time",
-      "Business Model",
-      "Technical Comfort",
-      "Speed to Income",
+      "Business context",
+      "Operational bottleneck",
+      "Existing tools",
+      "Information flow",
+      "Dependencies",
+      "First build scope",
     ],
-    done: "Your AI Income Plan Is Ready.",
+    done: "Your Operations Build Brief Is Ready.",
   },
   leadForm: {
-    heading: "Your AI Income Plan Is Ready.",
-    support: "Tell us where to send it and we'll unlock your personalized plan.",
-    cta: "Show Me My Plan",
-  },
-  waitlist: {
-    heading: "You Know Which Path Fits You. Now Learn How to Build It.",
-    body: "I'm preparing a live training that will walk you through how to take your AI opportunity from an idea to an actual offer, identify what people will pay for, use AI to build faster, and begin creating additional income. The training is currently being developed. Join the waitlist and we'll let you know when registration opens.",
-    cta: "Join the Training Waitlist",
-    confirmHeading: "You're On the List.",
-    confirmBody: "We'll let you know when registration opens.",
+    heading: "Your Operations Build Brief Is Ready.",
+    support:
+      "Add your business details to view your recommendation and discuss what a first version could look like.",
+    cta: "Show My Build Brief",
   },
 };
-
-export const stages = ["Goal", "Time", "Skills", "Preferences", "Your Plan"];
-
+export const stages = ["Business", "Friction", "Priorities", "Readiness", "Your Plan"];
 export const questions: Question[] = [
   {
-    id: "income_goal",
+    id: "business_type",
     type: "single",
-    stage: "Goal",
-    heading: "Start With the Number.",
-    support:
-      "The opportunity that makes sense for someone trying to create an extra $500 per month is very different from the opportunity required to build $10,000+ per month.",
-    question: "How much additional monthly income would you like to create?",
+    stage: "Business",
+    heading: "Start With Your Business.",
+    question: "What kind of business do you run?",
     options: [
-      { value: "500_1000", label: "$500–$1,000" },
-      { value: "1000_3000", label: "$1,000–$3,000" },
-      { value: "3000_5000", label: "$3,000–$5,000" },
-      { value: "5000_10000", label: "$5,000–$10,000" },
-      { value: "10000_plus", label: "$10,000+" },
+      {
+        value: "services",
+        label: "Professional services / agency",
+      },
+      {
+        value: "trades",
+        label: "Trades / construction / field services",
+      },
+      {
+        value: "retail",
+        label: "Retail / e-commerce",
+      },
+      {
+        value: "health",
+        label: "Healthcare / wellness",
+      },
+      {
+        value: "logistics",
+        label: "Manufacturing / logistics",
+      },
+      {
+        value: "other",
+        label: "Another type of business",
+      },
     ],
   },
   {
-    id: "weekly_time_available",
+    id: "team_size",
     type: "single",
-    stage: "Time",
-    heading: "How Much Time Do You Actually Have?",
-    support:
-      "Your available time should influence the opportunity you pursue. Someone with five hours per week should not build the same thing as someone preparing to go full-time.",
-    question: "How much time can you realistically commit each week?",
+    stage: "Business",
+    heading: "Who Needs to Stay Connected?",
+    question: "How many people work in your business?",
     options: [
-      { value: "under_5", label: "Less than 5 hours" },
-      { value: "5_10", label: "5–10 hours" },
-      { value: "10_20", label: "10–20 hours" },
-      { value: "20_plus", label: "20+ hours" },
-      { value: "full_time", label: "I eventually want to make this full-time" },
+      {
+        value: "solo",
+        label: "Just me",
+      },
+      {
+        value: "2_10",
+        label: "2\u201310 people",
+      },
+      {
+        value: "11_50",
+        label: "11\u201350 people",
+      },
+      {
+        value: "51_200",
+        label: "51\u2013200 people",
+      },
+      {
+        value: "200_plus",
+        label: "More than 200 people",
+      },
     ],
   },
   {
-    id: "selected_skills",
+    id: "bottleneck",
+    type: "single",
+    stage: "Friction",
+    heading: "Where Does Work Get Stuck?",
+    question: "Which problem would you fix first?",
+    options: [
+      {
+        value: "knowledge",
+        label: "We waste time finding information and context",
+      },
+      {
+        value: "workflow",
+        label: "Tasks, approvals, and handoffs fall through",
+      },
+      {
+        value: "vendors",
+        label: "Vendor or client updates are scattered",
+      },
+      {
+        value: "connected",
+        label: "I cannot see what is happening across the business",
+      },
+    ],
+    support: "Choose the problem with the biggest day-to-day impact.",
+  },
+  {
+    id: "tools",
     type: "multi",
-    stage: "Skills",
-    heading: "You Probably Have More to Work With Than You Think.",
-    support:
-      "AI does not mean starting over. In many cases, the fastest opportunity is using AI to increase the value of something you already know how to do.",
-    question: "Which skills or experience do you already have?",
+    stage: "Friction",
+    heading: "Keep What Already Works.",
+    question: "Which tools does your team use today?",
     options: [
-      { value: "video_editing", label: "Video Editing" },
-      { value: "graphic_design", label: "Graphic Design" },
-      { value: "writing", label: "Writing / Content" },
-      { value: "research", label: "Research" },
-      { value: "admin", label: "Administrative Work" },
-      { value: "sales", label: "Sales" },
-      { value: "marketing", label: "Marketing" },
-      { value: "customer_service", label: "Customer Service" },
-      { value: "operations", label: "Operations" },
-      { value: "technology", label: "Technology / Building" },
-      { value: "industry_knowledge", label: "Industry-Specific Knowledge" },
-      { value: "management", label: "Management / Leadership" },
-      { value: "consulting", label: "Consulting" },
-      { value: "other", label: "Other" },
+      {
+        value: "microsoft",
+        label: "Microsoft 365 / Outlook / Teams / SharePoint",
+      },
+      {
+        value: "google",
+        label: "Google Workspace / Gmail / Drive",
+      },
+      {
+        value: "slack",
+        label: "Slack or messaging apps",
+      },
+      {
+        value: "crm",
+        label: "CRM / project management software",
+      },
+      {
+        value: "spreadsheets",
+        label: "Spreadsheets and shared documents",
+      },
+      {
+        value: "manual",
+        label: "Paper, phone calls, or informal processes",
+      },
     ],
   },
   {
-    id: "income_timeline",
+    id: "information",
     type: "single",
-    stage: "Preferences",
-    heading: "How Fast Do You Need Results?",
-    support:
-      "Some opportunities can produce income quickly. Others require more time but can become significantly more scalable.",
-    question: "How quickly do you want this to begin producing income?",
+    stage: "Friction",
+    heading: "Where Is the Missing Context?",
+    question: "Which information is hardest to connect to the work?",
     options: [
-      { value: "30_days", label: "Within 30 days" },
-      { value: "1_3_months", label: "Within 1–3 months" },
-      { value: "3_6_months", label: "Within 3–6 months" },
-      { value: "long_term", label: "I am willing to build something long-term" },
+      {
+        value: "knowledge",
+        label: "Documents, procedures, and company knowledge",
+      },
+      {
+        value: "workflow",
+        label: "Meeting notes, decisions, and next steps",
+      },
+      {
+        value: "vendors",
+        label: "Agreements, vendor updates, and renewals",
+      },
+      {
+        value: "connected",
+        label: "Status updates across teams and systems",
+      },
     ],
   },
   {
-    id: "sales_comfort",
-    type: "scale",
-    stage: "Preferences",
-    heading: "How Comfortable Are You Selling?",
-    support:
-      "Most income opportunities require some level of customer acquisition. Your comfort with selling should influence the model you choose.",
-    question: "How comfortable are you finding and talking to potential customers?",
-    scale: {
-      min: 1,
-      max: 5,
-      minLabel: "I would rather avoid selling",
-      maxLabel: "I am very comfortable selling",
-    },
-  },
-  {
-    id: "technical_comfort",
+    id: "impact",
     type: "single",
-    stage: "Preferences",
-    heading: "How Technical Do You Want to Get?",
-    support:
-      "You do not have to become a developer to make money with AI. But your willingness to learn more advanced tools opens different opportunities.",
-    question: "Which statement fits you best?",
+    stage: "Priorities",
+    heading: "What Does the Friction Cost You?",
+    question: "What is the biggest consequence?",
     options: [
-      { value: "tools_only", label: "I mainly want to use existing AI tools" },
-      { value: "automations", label: "I am willing to learn simple automations" },
-      { value: "agents", label: "I am willing to learn AI agents and business implementations" },
-      { value: "software", label: "I am interested in eventually building software or products" },
+      {
+        value: "knowledge",
+        label: "Repeated questions and time spent searching",
+      },
+      {
+        value: "workflow",
+        label: "Missed deadlines and repeated manual work",
+      },
+      {
+        value: "vendors",
+        label: "Slow responses and missed commitments",
+      },
+      {
+        value: "connected",
+        label: "Everything comes back to me as the owner",
+      },
     ],
   },
   {
-    id: "business_model_preference",
+    id: "continuity",
     type: "single",
-    stage: "Preferences",
-    heading: "What Sounds Most Like You?",
-    question: "Which opportunity sounds the most appealing?",
+    stage: "Priorities",
+    heading: "Could Work Continue Without Your Main Tool?",
+    question: "How prepared are you for an outage or lost access?",
     options: [
-      { value: "use_existing_skill", label: "Make extra money using a skill I already have" },
-      { value: "service_to_business", label: "Provide a service to businesses" },
-      { value: "build_systems", label: "Build AI systems and automations for businesses" },
-      { value: "manage_systems", label: "Manage AI systems for recurring revenue" },
-      { value: "build_product", label: "Build something multiple customers can pay to use" },
-      { value: "unsure", label: "I honestly do not know yet" },
+      {
+        value: "tested",
+        label: "We have tested backups and a documented fallback",
+      },
+      {
+        value: "partial",
+        label: "Some backups exist, but we have not tested recovery",
+      },
+      {
+        value: "dependent",
+        label: "Work stops if our main platform is unavailable",
+      },
+      {
+        value: "unsure",
+        label: "I am not sure",
+      },
+    ],
+    support:
+      "A custom system needs its own recovery plan. Connecting tools does not automatically remove their dependencies.",
+  },
+  {
+    id: "timeline",
+    type: "single",
+    stage: "Readiness",
+    heading: "Choose a Practical Starting Point.",
+    question: "When would you like to start improving this?",
+    options: [
+      {
+        value: "now",
+        label: "Now \u2014 this is slowing us down",
+      },
+      {
+        value: "quarter",
+        label: "Within the next 1\u20133 months",
+      },
+      {
+        value: "exploring",
+        label: "I am exploring what is possible",
+      },
     ],
   },
   {
-    id: "existing_access",
-    type: "multi",
-    stage: "Preferences",
-    heading: "Who Can You Already Reach?",
-    support: "Access to customers can change which opportunity makes sense.",
-    question: "Which of these do you already have?",
-    optional: true,
+    id: "owner",
+    type: "single",
+    stage: "Readiness",
+    heading: "Who Will Help Make It Work?",
+    question: "Who can own the process and help test a first version?",
     options: [
-      { value: "business_owners", label: "Business owners in my network" },
-      { value: "online_audience", label: "An online audience" },
-      { value: "industry_experience", label: "Experience in a specific industry" },
-      { value: "past_clients", label: "Past clients" },
-      { value: "professional_relationships", label: "Professional relationships" },
-      { value: "coworkers", label: "Coworkers or industry contacts" },
-      { value: "none", label: "None yet" },
+      {
+        value: "me",
+        label: "I can own it as the business owner",
+      },
+      {
+        value: "team",
+        label: "An operations lead or team member",
+      },
+      {
+        value: "technical",
+        label: "An internal technical team",
+      },
+      {
+        value: "unsure",
+        label: "We need help defining ownership",
+      },
     ],
   },
 ];
-
 export interface PathContent {
   id: PathId;
   name: string;
@@ -230,117 +323,106 @@ export interface PathContent {
   avoid: string;
 }
 
-export const pathOrder: PathId[] = [
-  "freelancer",
-  "service_provider",
-  "implementation",
-  "product_builder",
-];
-
+export const pathOrder: PathId[] = ["knowledge", "workflow", "vendors", "connected"];
 export const paths: Record<PathId, PathContent> = {
-  freelancer: {
-    id: "freelancer",
-    name: "AI-Assisted Freelancer",
+  knowledge: {
+    id: "knowledge",
+    name: "Company Knowledge Hub",
     tagline:
-      "Use AI to make a skill you already have faster, better and more valuable — and get paid for it quickly.",
-    examples: ["Editing", "Content", "Design", "Research", "Admin support", "AI-assisted freelance work"],
-    dashboard: {
-      timeCommitment: "Low",
-      speedToMarket: "Fast",
-      technicalComplexity: "Low",
-      scalability: "Low",
-      customerAcquisition: "Moderate",
-    },
-    firstTarget: "Get your first paying client.",
-    nextMoves: [
-      "Pick the one skill you can deliver best today.",
-      "Use AI to cut your delivery time in half.",
-      "Make a simple offer and reach out to ten potential clients.",
-    ],
-    avoid: "Do not spend six months building an AI SaaS company before earning your first dollar.",
-  },
-  service_provider: {
-    id: "service_provider",
-    name: "AI Service Provider",
-    tagline:
-      "Package a repeatable, AI-enabled service that solves a recurring business problem for paying clients.",
+      "Connect documents to the conversations, decisions, and owners that give them meaning.",
     examples: [
-      "Content systems",
-      "AI-enabled marketing services",
-      "Lead generation systems",
-      "AI-enhanced service delivery",
+      "Searchable procedures",
+      "Linked meeting notes",
+      "Decision history",
+      "Role-based access",
     ],
     dashboard: {
-      timeCommitment: "Moderate",
-      speedToMarket: "Moderate",
-      technicalComplexity: "Moderate",
-      scalability: "Moderate",
-      customerAcquisition: "High",
+      timeCommitment: "One process owner",
+      speedToMarket: "Scoped pilot first",
+      technicalComplexity: "Depends on integrations",
+      scalability: "Expand after validation",
+      customerAcquisition: "Permissions + recovery",
     },
-    firstTarget: "Get 1–3 recurring business clients.",
+    firstTarget: "Find one approved answer with its source and owner.",
     nextMoves: [
-      "Choose one business problem to solve.",
-      "Choose one type of customer.",
-      "Build a simple offer and begin customer conversations.",
+      "Choose one team and the 20 questions they ask most.",
+      "Connect approved source documents and assign a content owner.",
+      "Pilot search with source links and measure time spent finding answers.",
     ],
-    avoid: "Do not try to offer ten different AI services at once.",
+    avoid: "Avoid importing every file before you establish permissions and content ownership.",
   },
-  implementation: {
-    id: "implementation",
-    name: "AI Implementation Specialist",
-    tagline:
-      "Install AI systems, automations and agents inside businesses that are paying for expensive operational problems.",
-    examples: [
-      "AI automations",
-      "AI phone agents",
-      "Lead follow-up systems",
-      "Workflow automation",
-      "Business AI implementation",
-      "Internal AI agents",
-    ],
+  workflow: {
+    id: "workflow",
+    name: "Workflow & Accountability System",
+    tagline: "Turn requests, meetings, and decisions into owned tasks with clear handoffs.",
+    examples: ["Request intake", "Approval queues", "Task owners", "Status notifications"],
     dashboard: {
-      timeCommitment: "Moderate",
-      speedToMarket: "Moderate",
-      technicalComplexity: "Advanced",
-      scalability: "High",
-      customerAcquisition: "Moderate",
+      timeCommitment: "One process owner",
+      speedToMarket: "Scoped pilot first",
+      technicalComplexity: "Depends on integrations",
+      scalability: "Expand after validation",
+      customerAcquisition: "Permissions + recovery",
     },
-    firstTarget:
-      "Identify one expensive business problem and package one repeatable AI solution.",
+    firstTarget: "Run one recurring workflow from request to completion.",
     nextMoves: [
-      "Pick one industry whose operations you understand.",
-      "Learn one automation or agent stack end to end.",
-      "Build one demo system and show it to three business owners.",
+      "Map one frequently delayed process with its owner.",
+      "Define each handoff, approval, and exception before automating it.",
+      "Pilot with one team and track cycle time and missed handoffs.",
     ],
     avoid:
-      "Do not stay stuck selling low-ticket generic AI tasks if you can solve larger operational problems.",
+      "Avoid automating an unclear process or removing human approval from sensitive decisions.",
   },
-  product_builder: {
-    id: "product_builder",
-    name: "AI Product Builder",
+  vendors: {
+    id: "vendors",
+    name: "Vendor & Client Operations Portal",
     tagline:
-      "Turn deep knowledge of a problem into software multiple customers pay to use every month.",
+      "Keep agreements, updates, commitments, and next steps together for every business relationship.",
     examples: [
-      "AI software",
-      "Industry-specific SaaS",
-      "Proprietary AI tools",
-      "Productized systems",
-      "AI platforms",
+      "Agreement records",
+      "Renewal reminders",
+      "Update history",
+      "Secure external access",
     ],
     dashboard: {
-      timeCommitment: "High",
-      speedToMarket: "Long-Term",
-      technicalComplexity: "Advanced",
-      scalability: "High",
-      customerAcquisition: "High",
+      timeCommitment: "One process owner",
+      speedToMarket: "Scoped pilot first",
+      technicalComplexity: "Depends on integrations",
+      scalability: "Expand after validation",
+      customerAcquisition: "Permissions + recovery",
     },
-    firstTarget:
-      "Validate one problem with at least five potential customers before building software.",
+    firstTarget: "Track one relationship from agreement through its next commitment.",
     nextMoves: [
-      "Write down the one problem you understand better than most.",
-      "Interview five people who live with that problem.",
-      "Build the smallest working version someone would pay for.",
+      "Choose one vendor or client workflow with frequent follow-up.",
+      "Link its agreement, contacts, dates, and open commitments.",
+      "Pilot scoped access and reminders, then measure response time.",
     ],
-    avoid: "Do not build the full product before validating whether customers actually want it.",
+    avoid: "Avoid giving external users access to internal notes or unrelated relationships.",
+  },
+  connected: {
+    id: "connected",
+    name: "Connected Operations Workspace",
+    tagline:
+      "Give your business a shared view of decisions, work, and dependencies across existing tools.",
+    examples: [
+      "Cross-team status",
+      "Linked decisions",
+      "System integrations",
+      "Exception tracking",
+    ],
+    dashboard: {
+      timeCommitment: "One process owner",
+      speedToMarket: "Scoped pilot first",
+      technicalComplexity: "Depends on integrations",
+      scalability: "Expand after validation",
+      customerAcquisition: "Permissions + recovery",
+    },
+    firstTarget: "See the status, owner, and next action for one cross-team process.",
+    nextMoves: [
+      "Map one process across the tools and teams it touches.",
+      "Choose the source of truth for each record and define access.",
+      "Connect a small workflow first; test failures, exports, and recovery.",
+    ],
+    avoid:
+      "Avoid replacing your entire software stack or building a dashboard without accountable next actions.",
   },
 };
