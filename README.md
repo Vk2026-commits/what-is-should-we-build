@@ -1,26 +1,9 @@
-# Pixel Perfect Pixels
+# Operations Build Finder
 
-Implement exactly the screenshot and nothing else
+A nine-question assessment that helps business owners identify the operations system to build first.
 
-This project was built with [Lovable](https://lovable.dev).
+Live app: https://what-is-should-we-build.lovable.app
 
-**Live app**: https://pixely-snap-show.lovable.app
+Lovable editor: https://lovable.dev/projects/f05ac4d4-23b7-439f-8094-bdbac0b1fa06
 
-## Build with Lovable
-
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/005f171d-a70e-4e7e-843e-f299c32cea28).
-
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
-
-## Development
-
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
-
-```sh
-git clone <this-repository-url>
-cd <repository-name>
-npm i
-npm run dev
-```
+See OPERATIONS-SETUP.md for database setup and validation commands. Run `npm install` and `npm run dev` for local development.
