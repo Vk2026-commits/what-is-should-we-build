@@ -35,7 +35,9 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: TITLE },
       { property: "og:description", content: DESCRIPTION },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://build.vektiss.com/" },
     ],
+    links: [{ rel: "canonical", href: "https://build.vektiss.com/" }],
   }),
   component: PathFinder,
 });

@@ -3,6 +3,7 @@ import { paths, questions, type PathId } from "../../../src/content/assessment.t
 
 const bookingUrl = "https://calendly.com/vektiss-info/vektiss-call";
 const allowedOrigins = [
+  "https://build.vektiss.com",
   "https://what-is-should-we-build.lovable.app",
   "https://id-preview--f05ac4d4-23b7-439f-8094-bdbac0b1fa06.lovable.app",
 ];
