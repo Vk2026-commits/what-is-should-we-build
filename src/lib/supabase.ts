@@ -1,7 +1,12 @@
 import { createClient } from "@supabase/supabase-js";
 
-const url = import.meta.env["VITE_SUPABASE_URL"] as string | undefined;
-const anonKey = import.meta.env["VITE_SUPABASE_ANON_KEY"] as string | undefined;
+const url =
+  (import.meta.env["VITE_SUPABASE_URL"] as string | undefined) ||
+  "https://bkmbgyhrldolybyuebwj.supabase.co";
+// Public client key: safe for the browser; table access is enforced by Supabase RLS.
+const anonKey =
+  (import.meta.env["VITE_SUPABASE_ANON_KEY"] as string | undefined) ||
+  "sb_publishable_9xQF7ZaLUzjHVThy88aO0g_caBha1yS";
 
 export const supabaseConfigured = Boolean(url && anonKey && !anonKey.startsWith("sb_secret_"));
 
