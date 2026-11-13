@@ -43,7 +43,7 @@ export function ResultHeader({ path, firstName }: { path: PathId; firstName: str
   return (
     <div>
       <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-primary">
-        {firstName ? `${firstName}, your` : "Your"} recommended first operations build
+        {firstName ? `${firstName}, your` : "Your"} first tool to build
       </p>
       <h1 className="mt-3 text-[34px] font-bold leading-[1.08] sm:text-6xl">{paths[path].name}</h1>
       <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-muted-foreground sm:text-lg">
@@ -57,12 +57,12 @@ export function ResultDashboard({ path, incomeGoal }: { path: PathId; incomeGoal
   const d = paths[path].dashboard;
   const rows = [
     { label: "Team Size", value: incomeGoal },
-    { label: "Recommended Build", value: paths[path].name },
-    { label: "Pilot Ownership", value: d.timeCommitment },
-    { label: "Delivery Approach", value: d.speedToMarket },
-    { label: "Technical Complexity", value: d.technicalComplexity },
-    { label: "Scalability", value: d.scalability },
-    { label: "Foundation", value: d.customerAcquisition },
+    { label: "What to Build", value: paths[path].name },
+    { label: "Who Leads It", value: d.timeCommitment },
+    { label: "How to Start", value: d.speedToMarket },
+    { label: "What It Needs", value: d.technicalComplexity },
+    { label: "How to Grow", value: d.scalability },
+    { label: "Keep It Safe", value: d.customerAcquisition },
   ];
   return (
     <div className="grid gap-px overflow-hidden rounded-2xl border border-border bg-border sm:grid-cols-2 lg:grid-cols-4">
@@ -87,7 +87,7 @@ export function OpportunityFitChart({
 }) {
   return (
     <div>
-      <h3 className="text-xl font-bold sm:text-2xl">Your Build Priorities</h3>
+      <h3 className="text-xl font-bold sm:text-2xl">Which Tool Fits Your Needs?</h3>
       <div className="mt-5 space-y-4">
         {pathOrder.map((id) => {
           const active = id === current;
@@ -130,8 +130,8 @@ export function OpportunityFitChart({
         })}
       </div>
       <p className="mt-4 text-xs text-muted-foreground">
-        These scores show how your bottleneck, information gaps, and business impact align with each
-        build. They are not ROI forecasts.
+        These scores show how your answers match each tool. They do not show how much money you will
+        make or save.
       </p>
     </div>
   );
@@ -143,7 +143,7 @@ export function NextSteps({ path }: { path: PathId }) {
       <div className="panel rounded-2xl p-6">
         <div className="flex items-center gap-2 text-primary">
           <Target className="size-4" />
-          <h3 className="text-sm font-semibold uppercase tracking-[0.16em]">Your First Target</h3>
+          <h3 className="text-sm font-semibold uppercase tracking-[0.16em]">Your First Goal</h3>
         </div>
         <p className="mt-3 font-display text-xl font-semibold leading-snug sm:text-2xl">
           {paths[path].firstTarget}
@@ -162,7 +162,7 @@ export function NextSteps({ path }: { path: PathId }) {
 
       <div className="panel rounded-2xl p-6">
         <h3 className="text-sm font-semibold uppercase tracking-[0.16em] text-primary">
-          Your Next 3 Moves
+          Your Next 3 Steps
         </h3>
         <ol className="mt-4 space-y-3">
           {paths[path].nextMoves.map((move, i) => (
@@ -184,9 +184,7 @@ export function AvoidSection({ path }: { path: PathId }) {
     <div className="rounded-2xl border border-border bg-navy-deep p-6">
       <div className="flex items-center gap-2 text-muted-foreground">
         <Ban className="size-4" />
-        <h3 className="text-sm font-semibold uppercase tracking-[0.16em]">
-          What NOT to Focus On Yet
-        </h3>
+        <h3 className="text-sm font-semibold uppercase tracking-[0.16em]">What to Skip for Now</h3>
       </div>
       <p className="mt-3 text-[17px] leading-relaxed sm:text-xl">{paths[path].avoid}</p>
     </div>
@@ -214,7 +212,7 @@ export function WaitlistCTA({
         return `${q.question}\n${values.map((v) => q.options?.find((o) => o.value === v)?.label ?? v).join(", ")}`;
       })
       .join("\n\n");
-    const text = `OPERATIONS BUILD BRIEF\n\n${paths[path].name}\n\n${summary}\n\nFIRST VERSION\n${paths[path].examples.join("\n")}\n\nNEXT STEPS\n${paths[path].nextMoves.join("\n")}\n\nSCOPE GUARDRAIL\n${paths[path].avoid}\n\nYOUR ANSWERS\n${responses}`;
+    const text = `YOUR BUILD PLAN\n\n${paths[path].name}\n\n${summary}\n\nFIRST VERSION\n${paths[path].examples.join("\n")}\n\nNEXT STEPS\n${paths[path].nextMoves.join("\n")}\n\nWHAT TO SKIP FOR NOW\n${paths[path].avoid}\n\nYOUR ANSWERS\n${responses}`;
     const url = URL.createObjectURL(new Blob([text], { type: "text/plain" }));
     const link = document.createElement("a");
     link.href = url;
@@ -224,24 +222,22 @@ export function WaitlistCTA({
   };
   return (
     <div className="panel rounded-2xl p-7 sm:p-10">
-      <p className="text-xs font-semibold uppercase tracking-widest text-primary">
-        From brief to first build
-      </p>
-      <h3 className="mt-3 text-3xl font-bold">Let’s Map Your First Version.</h3>
+      <p className="text-xs font-semibold uppercase tracking-widest text-primary">Your next step</p>
+      <h3 className="mt-3 text-3xl font-bold">Let’s Talk About Your First Build.</h3>
       <p className="mt-4 max-w-2xl text-muted-foreground">
-        Book a call to walk through your assessment, identify the highest-priority workflow, and
-        discuss what a first version could look like for your business.
+        Book a call with us. We will talk about your results, pick one problem to fix, and plan a
+        simple first build.
       </p>
       <p role="status" aria-live="polite" className="mt-4 text-sm text-muted-foreground">
         {emailStatus === "sent"
-          ? "Your assessment has been emailed to you. Check your inbox and spam folder."
+          ? "We emailed your plan to you. Check your inbox and spam folder."
           : emailStatus === "sending"
-            ? "Sending your assessment to your email…"
+            ? "Sending your plan by email…"
             : emailStatus === "processing"
-              ? "Your assessment email is being processed."
+              ? "Your email is on its way."
               : emailStatus === "failed"
-                ? "We couldn’t email your assessment yet. You can retry or download it below."
-                : "Keep a copy of your assessment using the download below."}
+                ? "We could not send your email yet. Try again or download your plan below."
+                : "Download your plan to keep a copy."}
       </p>
       {(emailStatus === "failed" || emailStatus === "processing") && onRetry && (
         <button
@@ -265,7 +261,7 @@ export function WaitlistCTA({
         onClick={download}
         className="mt-3 flex min-h-12 items-center gap-2 rounded-xl border border-border px-6 py-3 font-semibold text-foreground"
       >
-        Download My Build Brief <ArrowRight className="size-4" />
+        Download My Plan <ArrowRight className="size-4" />
       </button>
     </div>
   );
@@ -275,7 +271,7 @@ export function WhyThisFits({ summary }: { summary: string }) {
   return (
     <div className="panel rounded-2xl p-6 sm:p-8">
       <h3 className="text-sm font-semibold uppercase tracking-[0.16em] text-primary">
-        Why This Fits You
+        Why This Can Help
       </h3>
       <p className="mt-4 text-[17px] leading-relaxed sm:text-xl">{summary}</p>
     </div>

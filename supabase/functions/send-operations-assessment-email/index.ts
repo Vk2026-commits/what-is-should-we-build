@@ -69,7 +69,7 @@ Deno.serve(async (request) => {
     const text = [
       `Hi ${lead.first_name || "there"},`,
       "",
-      "Your Operations Build Brief",
+      "Your Build Plan",
       "",
       path.name,
       path.tagline,
@@ -77,28 +77,28 @@ Deno.serve(async (request) => {
       "WHY THIS FITS YOUR BUSINESS",
       record.result_summary,
       "",
-      "YOUR FIRST TARGET",
+      "YOUR FIRST GOAL",
       path.firstTarget,
       "",
       "FIRST VERSION",
       ...path.examples,
       "",
-      "YOUR NEXT 3 MOVES",
+      "YOUR NEXT 3 STEPS",
       ...path.nextMoves.map((v, i) => `${i + 1}. ${v}`),
       "",
-      "SCOPE GUARDRAIL",
+      "WHAT TO SKIP FOR NOW",
       path.avoid,
       "",
-      "YOUR ASSESSMENT ANSWERS",
+      "YOUR ANSWERS",
       answers,
       "",
       "READY TO TALK THROUGH YOUR BUILD?",
-      "Book a Vektiss call to discuss your priorities and the first version:",
+      "Book a call with us. We will talk about your results and plan one small build:",
       bookingUrl,
       "",
-      "You received this email because you requested your operations assessment.",
+      "You got this email because you asked for your build plan.",
     ].join("\n");
-    const html = `<div style="background:#f4f6f8;padding:24px;font-family:Arial,sans-serif;color:#142033"><div style="max-width:640px;margin:auto;background:white;padding:32px;border-radius:12px"><p style="color:#1666c5;font-size:12px;letter-spacing:2px">VEKTISS · OPERATIONS BUILD FINDER</p><h1>Your Operations Build Brief</h1><h2>${escapeHtml(path.name)}</h2><div style="white-space:pre-wrap;line-height:1.7">${escapeHtml(text)}</div><p style="margin-top:28px"><a href="${bookingUrl}" style="display:inline-block;background:#0964ef;color:white;padding:16px 24px;border-radius:8px;text-decoration:none;font-weight:bold">Book a Call About My Build</a></p></div></div>`;
+    const html = `<div style="background:#f4f6f8;padding:24px;font-family:Arial,sans-serif;color:#142033"><div style="max-width:640px;margin:auto;background:white;padding:32px;border-radius:12px"><p style="color:#1666c5;font-size:12px;letter-spacing:2px">VEKTISS · OPERATIONS BUILD FINDER</p><h1>Your Build Plan</h1><h2>${escapeHtml(path.name)}</h2><div style="white-space:pre-wrap;line-height:1.7">${escapeHtml(text)}</div><p style="margin-top:28px"><a href="${bookingUrl}" style="display:inline-block;background:#0964ef;color:white;padding:16px 24px;border-radius:8px;text-decoration:none;font-weight:bold">Book a Call About My Build</a></p></div></div>`;
     const response = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {
@@ -109,7 +109,7 @@ Deno.serve(async (request) => {
       body: JSON.stringify({
         from,
         to: [lead.email],
-        subject: `Your Operations Build Brief: ${path.name}`,
+        subject: `Your Build Plan: ${path.name}`,
         html,
         text,
         tags: [{ name: "funnel", value: "operations_build_finder" }],

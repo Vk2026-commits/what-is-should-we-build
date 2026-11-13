@@ -22,8 +22,8 @@ describe("operations recommendations", () => {
       "workflow",
       () => "Test",
     );
-    assert.match(summary, /appoint a process owner/);
-    assert.match(summary, /recovery review/);
+    assert.match(summary, /pick one person to lead/);
+    assert.match(summary, /safe copy of your files/);
   });
   it("has unique question ids and supported scoring values", () => {
     assert.equal(new Set(questions.map((q) => q.id)).size, questions.length);
